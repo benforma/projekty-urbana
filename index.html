@@ -1807,7 +1807,8 @@ document.getElementById('contactForm').addEventListener('submit', async function
     imie: document.getElementById('f_imie').value,
     email: document.getElementById('f_email').value,
     telefon: document.getElementById('f_telefon').value,
-    uwagi: document.getElementById('f_uwagi').value
+    uwagi: document.getElementById('f_uwagi').value,
+    zgoda: document.querySelector('input[name="akceptacja_regulaminu"]').checked ? '1' : ''
   };
   
   btn.disabled = true;
