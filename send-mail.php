@@ -62,6 +62,11 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
+if (empty($input['zgoda'])) {
+    echo json_encode(['success' => false, 'message' => 'Brak wymaganej zgody na przetwarzanie danych.']);
+    exit;
+}
+
 // Treść maila (HTML)
 $body = "
 <html>
