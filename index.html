@@ -1728,6 +1728,7 @@ footer p { font-size: 13px; }
             <span>Zgadzam się z warunkami zawartymi w <a href="files/polityka-prywatnosci.pdf" target="_blank">polityce prywatności</a> oraz <a href="files/2025-11-05-RODO.pdf" target="_blank">warunkami RODO</a>. *</span>
           </label>
         </div>
+        <div id="zgoda-error" style="display:none;color:#e53935;font-size:13px;margin-top:-4px;margin-bottom:8px;">Zaznacz zgodę na przetwarzanie danych, aby wysłać formularz.</div>
 
         <button class="btn-primary" type="submit" id="submitBtn">
           Wyślij zapytanie
@@ -1791,6 +1792,16 @@ document.getElementById('contactForm').addEventListener('submit', async function
   
   // Honeypot check
   if (form._honey.value) return;
+
+  // Walidacja zgody
+  const zgodaBox = document.querySelector('input[name="akceptacja_regulaminu"]');
+  const zgodaErr = document.getElementById('zgoda-error');
+  if (!zgodaBox.checked) {
+    zgodaErr.style.display = 'block';
+    zgodaBox.closest('.form-consents').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  zgodaErr.style.display = 'none';
   
   const data = {
     imie: document.getElementById('f_imie').value,
