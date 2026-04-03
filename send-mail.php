@@ -12,8 +12,8 @@ $config = [
     'smtp_secure'   => 'tls',                     // 'tls' lub 'ssl'
     'mail_from'     => 'twoj@email.pl',          // adres nadawcy
     'mail_from_name'=> 'Miejski Krajobraz',      // nazwa nadawcy
-    'mail_to'       => 'mateusz.bucko@4ma.pl',   // adres docelowy
-    'mail_subject'  => 'Nowe zapytanie o projekt placu zabaw',
+    'mail_to'       => 'info@urbana.com.pl',   // adres docelowy
+    'mail_subject'  => 'PROJEKTY URBANA',
 ];
 
 /**
