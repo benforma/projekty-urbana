@@ -1787,6 +1787,11 @@ const observer = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+// Fallback: show all reveal elements if IntersectionObserver doesn't fire
+setTimeout(() => {
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el => el.classList.add('visible'));
+}, 600);
+
 // Smooth scroll
 
 
