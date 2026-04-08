@@ -1739,13 +1739,14 @@ footer p { font-size: 13px; }
 
         <div class="form-consents">
           <label class="consent-label">
-            <input type="checkbox" name="akceptacja_regulaminu" required>
+            <input type="checkbox" name="akceptacja_regulaminu" id="f_akceptacja" required>
             <span class="checkmark"></span>
             <span>Zgadzam się z warunkami zawartymi w <a href="files/polityka-prywatnosci.pdf" target="_blank">polityce prywatności</a> oraz <a href="files/2025-11-05-RODO.pdf" target="_blank">warunkami RODO</a>. *</span>
           </label>
         </div>
         <div id="zgoda-error" style="display:none;color:#e53935;font-size:13px;margin-top:-4px;margin-bottom:8px;">Zaznacz zgodę na przetwarzanie danych, aby wysłać formularz.</div>
 
+        <div id="form-message" style="display:none;font-size:14px;margin-bottom:10px;font-weight:600;"></div>
         <button class="btn-primary" type="submit" id="submitBtn">
           Wyślij zapytanie
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m-4-4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1805,6 +1806,62 @@ setTimeout(() => {
        // Domyslnie zaznacz STANDARD
        const defaultCard = document.querySelectorAll('.pricing-card')[1];
        if (defaultCard) defaultCard.classList.add('selected');
+// Contact form — AJAX submit
+const _cf = document.getElementById('contactForm');
+if (_cf) {
+  _cf.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const msgDiv  = document.getElementById('form-message');
+    const checkbox = document.getElementById('f_akceptacja');
+    const btn     = document.getElementById('submitBtn');
+
+    // reset
+    msgDiv.style.display = 'none';
+    msgDiv.textContent = '';
+
+    // walidacja zgody
+    if (!checkbox.checked) {
+      msgDiv.textContent = 'Zgoda jest wymagana.';
+      msgDiv.style.cssText = 'display:block;color:#e53935;font-size:14px;margin-bottom:10px;font-weight:600;';
+      checkbox.focus();
+      return;
+    }
+
+    const origHTML = btn.innerHTML;
+    btn.disabled = true;
+    btn.textContent = 'Wysyłanie...';
+
+    const data = {
+      imie:    (document.getElementById('f_imie')?.value    || '').trim(),
+      email:   (document.getElementById('f_email')?.value   || '').trim(),
+      telefon: (document.getElementById('f_telefon')?.value || '').trim(),
+      uwagi:   (document.getElementById('f_uwagi')?.value   || '').trim()
+    };
+
+    try {
+      const res  = await fetch('send-mail.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const json = await res.json();
+      if (json.success) {
+        msgDiv.textContent = '✓ Zgłoszenie zostało wysłane! Odezwiemy się wkrótce.';
+        msgDiv.style.cssText = 'display:block;color:#3AAD71;font-size:14px;margin-bottom:10px;font-weight:600;';
+        _cf.reset();
+      } else {
+        msgDiv.textContent = 'Błąd: ' + (json.message || 'Spróbuj ponownie.');
+        msgDiv.style.cssText = 'display:block;color:#e53935;font-size:14px;margin-bottom:10px;font-weight:600;';
+      }
+    } catch (err) {
+      msgDiv.textContent = 'Błąd połączenia. Zadzwoń do nas lub spróbuj ponownie.';
+      msgDiv.style.cssText = 'display:block;color:#e53935;font-size:14px;margin-bottom:10px;font-weight:600;';
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = origHTML;
+    }
+  });
+}
 </script>
 </body>
 </html>
