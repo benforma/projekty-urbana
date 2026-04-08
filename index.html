@@ -1790,7 +1790,8 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 // Smooth scroll
 
 
-// Pricing card selectionquerySelectorAll('.pricing-card').forEach(card => {
+// Pricing card selection
+       document.querySelectorAll('.pricing-card').forEach(card => {
          card.addEventListener('click', () => {
            document.querySelectorAll('.pricing-card').forEach(c => c.classList.remove('selected'));
            card.classList.add('selected');
@@ -1798,7 +1799,7 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
        });
        // Domyslnie zaznacz STANDARD
        const defaultCard = document.querySelectorAll('.pricing-card')[1];
-       if (defaultCard) defaultCard.classList.add('selected')
+       if (defaultCard) defaultCard.classList.add('selected');
 </script>
 </body>
 </html>
