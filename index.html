@@ -1141,9 +1141,10 @@ footer p { font-size: 13px; }
 
 @media (max-width: 768px) {
   .hero { min-height: 80vh; padding: 110px 0 60px; }
-  .hero h1 { font-size: 32px; }
+  .hero h1 { font-size: 28px; line-height: 1.25; }
+  .hero-br { display: none; }
   .hero-desc { font-size: 15px; }
-  .hero-buttons { flex-direction: column; }
+  .hero-buttons { flex-direction: column; gap: 12px; }
   .hero-buttons .btn-primary,
   .hero-buttons .btn-outline { width: 100%; justify-content: center; }
   .concept-inner { grid-template-columns: 1fr; }
@@ -1153,12 +1154,20 @@ footer p { font-size: 13px; }
   .steps-grid { grid-template-columns: 1fr; gap: 32px; }
   .concept-features { grid-template-columns: 1fr; }
   nav ul { display: none; }
+  nav ul.show { display: flex; flex-direction: column; position: absolute; top: 70px; left: 0; right: 0; background: #fff; padding: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); gap: 8px; z-index: 999; }
+  nav ul.show li a { padding: 10px 0; display: block; font-size: 16px; }
   .nav-cta-desktop { display: none !important; }
   .mobile-menu-btn { display: flex; }
   .audience-grid { grid-template-columns: 1fr; }
   .adv-grid { grid-template-columns: 1fr; }
+  .portfolio-gallery { grid-template-columns: 1fr; }
   .clients-grid { grid-template-columns: repeat(2, 1fr); }
-  .section-title { font-size: 28px; }
+  .section-title { font-size: 26px; }
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .faq-question { font-size: 15px; }
+  .pricing-grid { max-width: 100% !important; }
+  .container { padding: 0 16px; }
+  .section { padding: 56px 0; }
 }
 
 /* ========== SCROLL ANIMATIONS ========== */
@@ -1171,6 +1180,13 @@ footer p { font-size: 13px; }
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Pricing card selected */
+.pricing-card { cursor: pointer; transition: transform 0.35s, box-shadow 0.35s, border-color 0.35s; }
+.pricing-card.selected { border: 2px solid var(--green-accent); box-shadow: 0 8px 32px rgba(46,174,96,0.2); transform: translateY(-4px); }
+
+/* Hero line break — desktop only */
+.hero-br { display: inline; }
 </style>
 </head>
 <body>
@@ -1204,7 +1220,7 @@ footer p { font-size: 13px; }
     <img src="image/hero.jpg" alt="Wizualizacja placu zabaw z lotu ptaka">
   </div>
   <div class="container"><div class="hero-inner">
-    <h1>Tworzymy projekty i koncepcje <span class="highlight">placów zabaw</span> oraz siłowni plenerowych</h1>
+    <h1>Tworzymy projekty i koncepcje <span class="highlight">placów zabaw</span><br class="hero-br"> oraz siłowni plenerowych</h1>
     <p class="hero-desc">Przygotujemy koncepcję na naszych urządzeniach, oraz wykonamy <em>projekt już od 500 zł netto.</em></p>
     <ul class="hero-checklist">
       <li>
@@ -1504,7 +1520,7 @@ footer p { font-size: 13px; }
       </div>
       <div class="step-card reveal">
         <div class="step-num">2</div>
-        <h4>Kontaktujemy się z TobŅ</h4>
+        <h4>Kontaktujemy się z Tobą</h4>
         <p>W ciągu 1-–2 dni skontaktujemy się w celu ustalenia zakresu.</p>
       </div>
       <div class="step-card reveal">
@@ -1771,6 +1787,16 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
 // Smooth scroll
+
+
+// Pricing card selection
+document.querySelectorAll('.pricing-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.pricing-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+  });
+});
+
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
     e.preventDefault();
